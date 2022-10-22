@@ -1,7 +1,5 @@
-// set year 2022, for now just 2022 hardcoded
 const year = 2022;
 
-// set month (dropdown select from array)
 const months = [
   "Enero",
   "Febrero",
@@ -14,7 +12,7 @@ const months = [
   "Setiembre",
   "Octubre",
   "Noviembre",
-  "Diciembre",
+  "Diciembre"
 ];
 
 const days = [
@@ -24,109 +22,176 @@ const days = [
   "Miércoles",
   "Jueves",
   "Viernes",
-  "Sábado",
-];
+  "Sábado"
+]
 
-const monthIndex = 9; // October
+let monthIndex = 0;
+generateMonth(monthIndex);
 
-let gridItems = "";
-
-// Step (1). Add day labels
-for (let i = 0; i < days.length; i++) {
-  gridItems += `<div class="grid-item days">${days[i]}</div>`;
+const monthSelector = document.querySelector('#select-month');
+let monthSelections = "";
+monthSelections += `
+  <select id="months-selector" onChange="handleMonthSelect(this.value)">`
+for (let i = 0; i < months.length; i++) {
+  monthSelections += `
+  <option id="month" value=${i}>${months[i]}</option>
+  `
 }
+monthSelections += `</select>`;
+const monthNode = fromStringToNode(monthSelections);
+monthSelector.appendChild(monthNode);
 
-// Step (2). Add empty offset dates (if necessary)
-// if `firstDayOfMonth` is not equal 0, it means
-// that the day is not Sunday. So, we don't need
-// to generate any empty (offset) date for our calendar.
-const firstDayOfMonth = new Date(year, monthIndex, 1).getDay();
-if (firstDayOfMonth !== 0) {
-  gridItems += `<div style="grid-column: 1 / ${firstDayOfMonth + 1}"></div>`;
-}
 
-// Step (3). Add dates
-let lastDateOfMonth = new Date(year, monthIndex + 1, 0).getDate();
-for (let i = 1; i <= lastDateOfMonth; i++) {
-  gridItems += `
+function generateMonth(monthIndex) {
+  const gridEl = document.querySelector("#grid-container");
+  // blank out to overwrite
+  gridEl.innerHTML = "";
+  let gridItems = "";
+  // (1). iterate through days
+  for (let i = 0; i < days.length; i++) {
+    gridItems += `<div class="grid-item days">${days[i]}</div>`;
+  };
+  // (2). blank space if needed
+  const firstDayOfMonth = new Date(year, monthIndex, 1).getDay();
+  if (firstDayOfMonth !== 0) {
+    gridItems += `<div style="grid-column: 1 / ${firstDayOfMonth + 1}"></div>`;
+  };
+  // (3). loads the numbers of dates of the month
+  let lastDateOfMonth = new Date(year, monthIndex + 1, 0).getDate();
+  for (let i = 1; i <= lastDateOfMonth; i++) {
+    gridItems += `
     <div class="grid-item dates">
       <div id="date-${i}" class="date-label">${i}</div>
       <div class="date-events"></div>
     </div>
-  `;
+    `
+  };
+  const node = fromStringToNode(gridItems);
+  gridEl.appendChild(node);
+
+  // Add event listeners for each date
+  const datesElements = document.querySelectorAll(".dates");
+  datesElements.forEach((dateEl) => {
+    dateEl.addEventListener("click", () => {
+      showAddEventDialog(dateEl);
+    });
+  });
+
+  // Blanks out the side panel
+  const sidePanelEventEl = document.getElementById("events-container");
+  sidePanelEventEl.innerHTML = ""
 }
 
-// Step (4). Add all items to grid
-const node = fromStringToNode(gridItems);
-const gridEl = document.getElementById("grid-container");
-gridEl.appendChild(node);
 
-// Step (5). Add event listeners for each date
-const datesElements = document.querySelectorAll(".dates");
-datesElements.forEach((dateEl) => {
-  dateEl.addEventListener("click", () => {
-    showAddEventDialog(dateEl);
-  });
-});
+function handleMonthSelect(index) {
+  const _index = parseInt(index, 10)
+
+  monthIndex = _index;
+  console.log(monthIndex)
+
+  generateMonth(_index)
+}
+
 
 function showAddEventDialog(dateEl) {
-  const dialogContainerEl = document.getElementById("pop-window");
+  const dialogEl = document.getElementById("dialog-window");
+  const date = dateEl.querySelector(".date-label").innerText;
 
-  if (
-    !dialogContainerEl.getAttribute("style", "display") ||
-    dialogContainerEl.getAttribute("style", "display") == "display:none"
-  ) {
-    const date = dateEl.querySelector(".date-label").innerText;
+  dialogEl.style.display = "block";
 
-    const dialog = `
+  const formEl = document.getElementById('add-event-form');
+  
+  
+  formEl.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const description = e.target[1].value
+    
+    const sidePanelEventEl = document.getElementById("events-container");
+    const dateEventsEl = dateEl.querySelector(".date-events");
+    let emojiStr = "";
+    let sidePanelShowEvent = "";
+
+        let emojiIndex = e.target[0].value;
+
+    if (emojiIndex == 0) {
+      emojiStr = `
+      <div class="event-container">
+        <span class="event-icon">🎂${description}</span>
+      </div>`;
+
+      sidePanelShowEvent= `
       <div>
-        <button id="exit-button" onClick="closeWindow()">&times</button>
-          <form id="add-event-form" autocomplete="off">
-            <h3>Nuevo Evento<h3>
-            <h4 style="color: blue" id="event-date">${date}/${months[monthIndex]}/${year}</h4>
-            <input value="${date}/${monthIndex}/${year}" hidden>
-            <label for="event">Asunto:</label>
-            <input type="text" id="event" placeholder="Cumpleaños de mamá">
-            <button type="submit" id="submit-button">Cargar</button>
-          </form>
+        <span>${date}/${monthIndex + 1}/${year} - 🎂${description}</span>
       </div>
-    `;
+      `
 
-    const node = fromStringToNode(dialog);
-    dialogContainerEl.appendChild(node);
+    } else if (emojiIndex == 1) {
+      emojiStr = `
+      <div class="event-container">
+        <span class="event-icon">💃🏻${description}</span>
+      </div>`;
 
-    // after adding the dialog content, we must display it (container)!
-    // dialog container is hidden by default
-    dialogContainerEl.setAttribute("style", "display: block");
+      sidePanelShowEvent = `
+      <div>
+        <span>${date}/${monthIndex + 1}/${year} - 💃🏻${description}</span>
+      </div>
+      `
 
-    let formEl = document.getElementById("add-event-form");
-    formEl.addEventListener("submit", (e) => {
-      e.preventDefault();
+    } else if (emojiIndex == 2) {
+      emojiStr = `
+      <div class="event-container">
+        <span class="event-icon">💼${description}</span>
+      </div>`;
+ 
+      sidePanelShowEvent = `
+      <div>
+        <span>${date}/${monthIndex + 1}/${year} - 💼${description}</span>
+      </div>
+      `
 
-      const date = e.target[0].value;
-      const description = e.target[1].value;
+    } else if (emojiIndex == 3) {
+      emojiStr = `
+      <div class="event-container">
+        <span class="event-icon">🌎${description}</span>
+      </div>`;
 
-      // clear input
-      e.target[1].value = "";
+      sidePanelShowEvent = `
+      <div>
+        <span>${date}/${monthIndex + 1}/${year} - 🌎${description}</span>
+      </div>
+      `
 
-      // append new event to date
-      const icon = `<span class="event-icon">🎂${description}</span>`;
-      const node = fromStringToNode(icon);
+    } else {
+      emojiStr = `
+      <div class="event-container">
+        <span class="event-icon">🦙${description}</span>
+      </div>`;
 
-      const dateEventsEl = dateEl.querySelector(".date-events");
-      dateEventsEl.appendChild(node);
+      sidePanelShowEvent = `
+      <div>
+        <span>${date}/${monthIndex + 1}/${year} - 🦙${description}</span>
+      </div>
+      `
+    };
 
-      dialogContainerEl.setAttribute("style", "display:none");
-      dialogContainerEl.innerHTML = "";
-    });
-  }
+    const emojiNode = fromStringToNode(emojiStr);
+    dateEventsEl.appendChild(emojiNode);
+
+    const sideEventNode = fromStringToNode(sidePanelShowEvent);
+    sidePanelEventEl.appendChild(sideEventNode);
+    
+
+  
+    closeDialog();
+  })
 }
 
-function closeWindow() {
-  const dialog = document.getElementById("pop-window");
-  dialog.setAttribute("style", "display:none");
-  dialog.innerHTML = "";
+
+function closeDialog() {
+  const dialogEl = document.getElementById("dialog-window");
+  dialogEl.style.display = "none";
 }
+
 
 function fromStringToNode(string) {
   let template = document.createElement("template");

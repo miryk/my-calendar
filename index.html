@@ -1,18 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Istok+Web:ital,wght@0,400;0,700;1,400;1,700&family=Merienda:wght@400;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calendar 2022</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="./script.js" defer></script>
+  <script src="script.js" defer></script>
 </head>
-<body>
-  <h1>Calendar App 2022</h1>
-  <h2>October</h2>
-  <div class="grid-container" id="grid-container"></div>
-  <div id="pop-window"></div>
-</body>
-</html>
 
+<body>
+  <div id="main-calendar-side">
+    <h1>My Calendar 2022</h1>
+    <div id="select-month"></div>
+    <div class="grid-container" id="grid-container"></div>
+    <div id="dialog-window">
+      <div id="dialog-container">
+        <h3>Nuevo Evento</h3>
+        <h4 id="event-date"></h4>
+        <div id="close-btn-container">
+          <button id="close-btn" onClick="closeDialog()">🗙</button>
+        </div>
+        <form id="add-event-form">
+          <label for="event">Emoji:</label>
+          <select id="emojis-event">
+            <option value="0"><span>🎂</span></option>
+            <option value="1"><span>💃🏻</span></option>
+            <option value="2"><span>💼</span></option>
+            <option value="3"><span>🌎</span></option>
+            <option value="4"><span>🦙</span></option>
+          </select>
+          <div>
+            <input type="text" id="event-detail" placeholder="Cumpleaños de mamá" maxlength="25" autocomplete="off">
+          </div>
+
+          <button id="submit-btn" type="submit">Cargar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div id="secondary-panel">
+    <div id="event-header-container">
+      <h5 id="event-header">Recordatorios!&nbsp;<span class="material-symbols-outlined">notification_add</span></h5>
+    </div>
+    <div id="events-container">
+
+    </div>
+  </div>
+</body>
+
+</html>
