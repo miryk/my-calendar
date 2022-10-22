@@ -28,6 +28,7 @@ const days = [
 let monthIndex = 0;
 generateMonth(monthIndex);
 
+// constructs month selector
 const monthSelector = document.querySelector('#select-month');
 let monthSelections = "";
 monthSelections += `
@@ -47,15 +48,18 @@ function generateMonth(monthIndex) {
   // blank out to overwrite
   gridEl.innerHTML = "";
   let gridItems = "";
+
   // (1). iterate through days
   for (let i = 0; i < days.length; i++) {
     gridItems += `<div class="grid-item days">${days[i]}</div>`;
   };
+
   // (2). blank space if needed
   const firstDayOfMonth = new Date(year, monthIndex, 1).getDay();
   if (firstDayOfMonth !== 0) {
     gridItems += `<div style="grid-column: 1 / ${firstDayOfMonth + 1}"></div>`;
   };
+
   // (3). loads the numbers of dates of the month
   let lastDateOfMonth = new Date(year, monthIndex + 1, 0).getDate();
   for (let i = 1; i <= lastDateOfMonth; i++) {
@@ -66,6 +70,7 @@ function generateMonth(monthIndex) {
     </div>
     `
   };
+
   const node = fromStringToNode(gridItems);
   gridEl.appendChild(node);
 
@@ -77,11 +82,10 @@ function generateMonth(monthIndex) {
     });
   });
 
-  // Blanks out the side panel
+  // Blanks out the side panel per month
   const sidePanelEventEl = document.getElementById("events-container");
   sidePanelEventEl.innerHTML = ""
 }
-
 
 function handleMonthSelect(index) {
   const _index = parseInt(index, 10)
@@ -95,31 +99,31 @@ function handleMonthSelect(index) {
 
 function showAddEventDialog(dateEl) {
   const dialogEl = document.getElementById("dialog-window");
-  const date = dateEl.querySelector(".date-label").innerText;
 
   dialogEl.style.display = "block";
 
   const formEl = document.getElementById('add-event-form');
-  
-  
+
   formEl.addEventListener("submit", (e) => {
     e.preventDefault();
-    const description = e.target[1].value
-    
+    const description = e.target[1].value;
+
+    const date = dateEl.querySelector(".date-label").innerText;
     const sidePanelEventEl = document.getElementById("events-container");
     const dateEventsEl = dateEl.querySelector(".date-events");
     let emojiStr = "";
     let sidePanelShowEvent = "";
 
-        let emojiIndex = e.target[0].value;
+    let emojiIndex = e.target[0].value;
 
+    // constructs html depending on emoji
     if (emojiIndex == 0) {
       emojiStr = `
       <div class="event-container">
         <span class="event-icon">🎂${description}</span>
       </div>`;
 
-      sidePanelShowEvent= `
+      sidePanelShowEvent = `
       <div>
         <span>${date}/${monthIndex + 1}/${year} - 🎂${description}</span>
       </div>
@@ -142,7 +146,7 @@ function showAddEventDialog(dateEl) {
       <div class="event-container">
         <span class="event-icon">💼${description}</span>
       </div>`;
- 
+
       sidePanelShowEvent = `
       <div>
         <span>${date}/${monthIndex + 1}/${year} - 💼${description}</span>
@@ -179,9 +183,11 @@ function showAddEventDialog(dateEl) {
 
     const sideEventNode = fromStringToNode(sidePanelShowEvent);
     sidePanelEventEl.appendChild(sideEventNode);
-    
 
-  
+    // resets text input
+    e.target[1].value = "";
+
+    // closes dialog when submited
     closeDialog();
   })
 }
@@ -190,6 +196,8 @@ function showAddEventDialog(dateEl) {
 function closeDialog() {
   const dialogEl = document.getElementById("dialog-window");
   dialogEl.style.display = "none";
+  const inputDetail = document.getElementById("event-detail");
+  inputDetail.value = "";
 }
 
 

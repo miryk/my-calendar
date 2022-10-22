@@ -1,7 +1,7 @@
-*{
+* {
   box-sizing: border-box;
-  font-family: 'Istok Web', sans-serif;
-  }
+  font-family: "Istok Web", sans-serif;
+}
 
 #main-calendar-side {
   width: 75%;
@@ -15,26 +15,25 @@
   height: 100%;
   top: 0;
   right: 0;
-  background-color: #FFDEE9;
-  background-image: linear-gradient(0deg, #FFDEE9 0%, #B5FFFC 100%);
+  background-color: #ffdee9;
+  background-image: linear-gradient(0deg, #ffdee9 0%, #b5fffc 100%);
 }
 
-
 h1 {
-  font-family: 'Merienda', cursive;
+  font-family: "Merienda", cursive;
   text-align: center;
 }
 
 h3 {
   text-align: center;
   margin: 10px;
-  font-family: 'Merienda', cursive;
+  font-family: "Merienda", cursive;
 }
 
 h4 {
   text-align: center;
   margin: 8px;
-  color: rgb(33, 133, 221)
+  color: rgb(33, 133, 221);
 }
 
 #select-month {
@@ -95,7 +94,7 @@ h4 {
   display: none;
   width: 600px;
   height: 250px;
-  background-color: #FFDEE9;
+  background-color: #ffdee9;
   background-image: linear-gradient(0deg, #f0e1a6 0%, #bef0ee 100%);
   color: black;
   font-size: 1.2rem;
@@ -150,7 +149,7 @@ label {
   margin-top: 35px;
   margin-bottom: 20px;
   font-size: 1.2rem;
-  font-family: 'Isotok', sans-serif;
+  font-family: "Isotok", sans-serif;
   font-weight: bold;
   font-style: italic;
 }
@@ -188,7 +187,7 @@ button {
   border-radius: 50%;
 }
 
-#submit-btn{
+#submit-btn {
   border-radius: 5px;
   border: 1px solid black;
 }
