@@ -88,6 +88,7 @@ function generateMonth(monthIndex) {
   sidePanelEventEl.innerHTML = ""
 }
 
+
 function handleMonthSelect(index) {
   const _index = parseInt(index, 10)
 
@@ -117,7 +118,6 @@ function showAddEventDialog(dateEl) {
     let sidePanelShowEvent = "";
 
     let emojiIndex = e.target[0].value;
-
 
     // constructs html depending on emoji
     if (emojiIndex == 0) {
@@ -201,7 +201,6 @@ function closeDialog() {
   dialogEl.style.display = "none";
   const inputDetail = document.getElementById("event-detail");
   inputDetail.value = "";
-  
 }
 
 
