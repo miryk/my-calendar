@@ -74,6 +74,7 @@ function generateMonth(monthIndex) {
   const node = fromStringToNode(gridItems);
   gridEl.appendChild(node);
 
+
   // Add event listeners for each date
   const datesElements = document.querySelectorAll(".dates");
   datesElements.forEach((dateEl) => {
@@ -91,7 +92,6 @@ function handleMonthSelect(index) {
   const _index = parseInt(index, 10)
 
   monthIndex = _index;
-  console.log(monthIndex)
 
   generateMonth(_index)
 }
@@ -103,18 +103,21 @@ function showAddEventDialog(dateEl) {
   dialogEl.style.display = "block";
 
   const formEl = document.getElementById('add-event-form');
+  const date = dateEl.querySelector(".date-label").innerText;
+
 
   formEl.addEventListener("submit", (e) => {
     e.preventDefault();
     const description = e.target[1].value;
 
-    const date = dateEl.querySelector(".date-label").innerText;
+    // const date = dateEl.querySelector(".date-label").innerText;
     const sidePanelEventEl = document.getElementById("events-container");
     const dateEventsEl = dateEl.querySelector(".date-events");
     let emojiStr = "";
     let sidePanelShowEvent = "";
 
     let emojiIndex = e.target[0].value;
+
 
     // constructs html depending on emoji
     if (emojiIndex == 0) {
@@ -198,6 +201,7 @@ function closeDialog() {
   dialogEl.style.display = "none";
   const inputDetail = document.getElementById("event-detail");
   inputDetail.value = "";
+  
 }
 
 

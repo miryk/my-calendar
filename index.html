@@ -25,7 +25,7 @@
     <div id="dialog-window">
       <div id="dialog-container">
         <h3>Nuevo Evento</h3>
-        <h4 id="event-date"></h4>
+        <!-- <h4 id="event-date"></h4> -->
         <div id="close-btn-container">
           <button id="close-btn" onClick="closeDialog()">🗙</button>
         </div>
@@ -41,6 +41,7 @@
           <div>
             <input type="text" id="event-detail" placeholder="Cumpleaños de mamá" maxlength="25" autocomplete="off">
           </div>
+          <input id="event-date" hidden> 
 
           <button id="submit-btn" type="submit">Cargar</button>
         </form>
